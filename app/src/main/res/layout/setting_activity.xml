@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/setting_date_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="日付：" />
+
+    <EditText
+        android:id="@+id/setting_date_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/setting_title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="タイトル：" />
+
+    <EditText
+        android:id="@+id/setting_title_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/setting_content_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="詳細：" />
+
+    <EditText
+        android:id="@+id/setting_content_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end">
+
+        <Button
+            android:id="@+id/setting_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="削除" />
+
+        <Button
+            android:id="@+id/setting_save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="保存" />
+
+    </LinearLayout>
+</LinearLayout>
