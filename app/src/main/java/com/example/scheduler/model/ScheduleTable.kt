@@ -74,12 +74,33 @@ class ScheduleTable {
                     }
                 }
 
-            } catch (t: Throwable) {
-
+            } catch (e: Exception) {
+                Log.e(TAG, "#doSelectAll $e")
             } finally {
                 cursor?.close()
+                db.close()
             }
             return itemList
+        }
+
+        fun update(context: Context, data: ScheduleData) {
+            val helper = ScheduleDbHelper(context)
+            val db = helper.writableDatabase
+
+            val values = ContentValues()
+            values.put(COL_DATE, data.date)
+            values.put(COL_TITLE, data.title)
+            values.put(COL_CONTENT, data.content)
+
+            val whereClause = "$COL_ID = ?"
+            try {
+                val count = db.update(TABLE_NAME, values, whereClause, arrayOf(data.id.toString()))
+                Log.d(TAG, "#update count -> $count")
+            } catch (e: Exception) {
+                Log.e(TAG, "#update $e")
+            } finally {
+                db.close()
+            }
         }
     }
 }

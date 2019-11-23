@@ -28,10 +28,19 @@ class DbWorker(context: Context, workerParams: WorkerParameters) : Worker(contex
                     ScheduleTable.doDeleteSchedule(applicationContext, id)
                 }
             }
+
+            WorkerDefine.TYPE_SCHEDULE_UPDATE -> {
+                val data = createScheduleData()
+                data.id = inputData.getLong(WorkerDefine.SCHEDULE_ID, -1)
+
+                if(data.id != -1L) {
+                    ScheduleTable.update(applicationContext, data)
+                }
+            }
         }
 
         Result.success()
-    } catch (t: Throwable) {
+    } catch (e: Exception) {
         Result.failure()
     }
 
@@ -50,6 +59,21 @@ class DbWorker(context: Context, workerParams: WorkerParameters) : Worker(contex
 
             val data = Data.Builder().apply {
                 putInt(WorkerDefine.SCHEDULE_TYPE, WorkerDefine.TYPE_SCHEDULE_SAVE)
+                putString(WorkerDefine.SCHEDULE_DATE, date)
+                putString(WorkerDefine.SCHEDULE_TITLE, title)
+                putString(WorkerDefine.SCHEDULE_CONTENT, content)
+            }.build()
+
+            val worker = OneTimeWorkRequestBuilder<DbWorker>()
+                .apply { setInputData(data) }.build()
+
+            WorkManager.getInstance().enqueue(worker)
+        }
+
+        fun startUpdateDbWorker(id: Long, date: String, title: String, content: String) {
+            val data = Data.Builder().apply {
+                putInt(WorkerDefine.SCHEDULE_TYPE, WorkerDefine.TYPE_SCHEDULE_UPDATE)
+                putLong(WorkerDefine.SCHEDULE_ID, id)
                 putString(WorkerDefine.SCHEDULE_DATE, date)
                 putString(WorkerDefine.SCHEDULE_TITLE, title)
                 putString(WorkerDefine.SCHEDULE_CONTENT, content)

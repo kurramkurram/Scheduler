@@ -5,6 +5,7 @@ class WorkerDefine {
         const val SCHEDULE_TYPE = "schedule_type"
         const val TYPE_SCHEDULE_SAVE = 0
         const val TYPE_SCHEDULE_DELETE = 1
+        const val TYPE_SCHEDULE_UPDATE = 2
 
         const val SCHEDULE_DATE = "schedule_date"
         const val SCHEDULE_TITLE = "schedule_title"

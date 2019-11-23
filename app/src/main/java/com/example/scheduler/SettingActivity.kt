@@ -35,11 +35,10 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<Button>(R.id.setting_save_btn).setOnClickListener(this)
         findViewById<Button>(R.id.setting_delete_btn).setOnClickListener(this)
 
-
         val data = intent.getParcelableExtra<ScheduleData>("schedule_data")
         scheduleId = data!!.id
 
-            if (scheduleId != -1L) {
+        if (scheduleId != -1L) {
             Log.d(TAG, "#onCreate id = $scheduleId date = " + data.date)
 
             dateEntry.setText(data.date)
@@ -61,11 +60,21 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
         val date = sdf.parse(dateEntry.text.toString())
         val dateString = date?.toString() ?: ""
 
-        DbWorker.startInsertDbWorker(
-            dateString,
-            titleEntry.text.toString(),
-            contentEntry.text.toString()
-        )
+
+        if (scheduleId == -1L) {
+            DbWorker.startInsertDbWorker(
+                dateString,
+                titleEntry.text.toString(),
+                contentEntry.text.toString()
+            )
+        } else {
+            DbWorker.startUpdateDbWorker(
+                scheduleId,
+                dateString,
+                titleEntry.text.toString(),
+                contentEntry.text.toString()
+            )
+        }
 
         Toast.makeText(applicationContext, "保存しました", Toast.LENGTH_SHORT).show()
         finish()
