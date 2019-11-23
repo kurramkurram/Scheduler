@@ -37,7 +37,6 @@ class DbWorker(context: Context, workerParams: WorkerParameters) : Worker(contex
 
     private fun createScheduleData(): ScheduleData {
         Log.d("DbWorker", "#createScheduleData")
-//        val id = inputData.getLong(WorkerDefine.SCHEDULE_ID, -1)
         val date = inputData.getString(WorkerDefine.SCHEDULE_DATE)
         val title = inputData.getString(WorkerDefine.SCHEDULE_TITLE)
         val content = inputData.getString(WorkerDefine.SCHEDULE_CONTENT)
@@ -49,10 +48,8 @@ class DbWorker(context: Context, workerParams: WorkerParameters) : Worker(contex
 
         fun startInsertDbWorker(date: String, title: String, content: String) {
 
-//            Log.d("DbWorker", "#startInsertDbWorker id =$id date = $date title = $title content = $content")
             val data = Data.Builder().apply {
                 putInt(WorkerDefine.SCHEDULE_TYPE, WorkerDefine.TYPE_SCHEDULE_SAVE)
-//                putLong(WorkerDefine.SCHEDULE_ID, id)
                 putString(WorkerDefine.SCHEDULE_DATE, date)
                 putString(WorkerDefine.SCHEDULE_TITLE, title)
                 putString(WorkerDefine.SCHEDULE_CONTENT, content)

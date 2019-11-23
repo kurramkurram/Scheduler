@@ -61,10 +61,6 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
         val date = sdf.parse(dateEntry.text.toString())
         val dateString = date?.toString() ?: ""
 
-//        if (scheduleId == -1L) {
-//            scheduleId = ScheduleTable.getMaxId(applicationContext) + 1
-//        }
-
         DbWorker.startInsertDbWorker(
             dateString,
             titleEntry.text.toString(),

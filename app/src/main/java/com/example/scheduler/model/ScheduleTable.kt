@@ -52,45 +52,13 @@ class ScheduleTable {
             db.delete(TABLE_NAME, "_id = ?", arrayOf(id.toString()))
         }
 
-        fun doSelectSchedule(context: Context, id: Long): ScheduleData? {
-            Log.d(TAG, "#doSelectSchedule id = $id")
-
-            val helper = ScheduleDbHelper(context)
-            val db = helper.writableDatabase
-
-            val sql = "SELECT * FROM $TABLE_NAME where $COL_ID = ?"
-            var cursor: Cursor? = null
-            var data: ScheduleData? = null
-            try {
-                cursor = db.rawQuery(sql, arrayOf(id.toString()))
-                Log.d(TAG, "#doSelectSchedule cursor count = " + cursor.count)
-                if (0 < cursor.count) {
-                    val date = cursor.getString(cursor.getColumnIndex(COL_DATE))
-                    val title = cursor.getString(cursor.getColumnIndex(COL_TITLE))
-                    val content = cursor.getString(cursor.getColumnIndex(COL_CONTENT))
-                    Log.d(
-                        TAG,
-                        "#doSelectSchedule date -> $date title -> $title content -> $content"
-                    )
-                    data = ScheduleData(id, date, title, content)
-                }
-
-            } catch (t: Throwable) {
-
-            } finally {
-                cursor?.close()
-            }
-
-            return data
-        }
-
         fun doSelectAll(context: Context): List<ScheduleData> {
             val helper = ScheduleDbHelper(context)
             val db = helper.writableDatabase
 
             val sql = "SELECT * FROM $TABLE_NAME"
             var cursor: Cursor? = null
-            var itemList = mutableListOf<ScheduleData>()
+            val itemList = mutableListOf<ScheduleData>()
 
             try {
                 cursor = db.rawQuery(sql, null, null)
@@ -113,28 +81,5 @@ class ScheduleTable {
             }
             return itemList
         }
-
-        fun getMaxId(context: Context): Long {
-            val helper = ScheduleDbHelper(context)
-            val db = helper.writableDatabase
-
-            val sql = "SELECT MAX($COL_ID) FROM $TABLE_NAME"
-            var cursor: Cursor? = null
-            var id: Long = -1
-            try {
-                cursor = db.rawQuery(sql, null, null)
-                if (0 < cursor.count) {
-                    id = cursor.getLong(cursor.getColumnIndex(COL_ID))
-
-                }
-            } catch (t: Throwable) {
-
-            } finally {
-                cursor?.close()
-            }
-
-            return id
-        }
-
     }
 }
