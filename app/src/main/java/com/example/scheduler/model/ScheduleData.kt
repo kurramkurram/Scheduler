@@ -3,19 +3,21 @@ package com.example.scheduler.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class ScheduleData(
-    var id: Long = 0,
-    var date: String?,
-    var title: String?,
-    var content: String?
-) : Parcelable {
+class ScheduleData : Parcelable {
 
-    constructor(parcel: Parcel) : this(
-        parcel.readLong(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString()
-    ) {
+    var id: Long = 0
+    var date: String? = null
+    var title: String? = null
+    var content: String? = null
+
+    constructor(id: Long, date: String?, title: String?, content: String?) {
+        this.id = id
+        this.date = date
+        this.title = title
+        this.content = content
+    }
+
+    constructor(parcel: Parcel) {
         id = parcel.readLong()
         date = parcel.readString()
         title = parcel.readString()
@@ -31,13 +33,14 @@ data class ScheduleData(
 
     override fun describeContents() = 0
 
-    companion object CREATOR : Parcelable.Creator<ScheduleData> {
-        override fun createFromParcel(parcel: Parcel): ScheduleData {
-            return ScheduleData(parcel)
-        }
+    companion object {
 
-        override fun newArray(size: Int): Array<ScheduleData?> {
-            return arrayOfNulls(size)
+        @JvmField
+        val CREATOR: Parcelable.Creator<ScheduleData> = object : Parcelable.Creator<ScheduleData> {
+            override fun createFromParcel(source: Parcel): ScheduleData = ScheduleData(source)
+
+            override fun newArray(size: Int): Array<ScheduleData?> = arrayOfNulls(size)
+
         }
     }
 }

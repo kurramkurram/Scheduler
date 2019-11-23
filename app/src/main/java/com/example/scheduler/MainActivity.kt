@@ -61,7 +61,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun onListTapped(data: ScheduleData) {
         val intent = Intent(this, SettingActivity::class.java)
-        intent.putExtra("schedule_id", data.id)
+
+        intent.putExtra("schedule_data", data)
         startActivity(intent)
     }
 }

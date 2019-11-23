@@ -16,6 +16,8 @@ class ScheduleTable {
         private const val COL_TITLE = "title"
         private const val COL_CONTENT = "content"
 
+        private const val TAG = "ScheduleTable"
+
         const val sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
                 "(" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -34,7 +36,7 @@ class ScheduleTable {
 
         private fun insert(db: SQLiteDatabase, data: ScheduleData) {
             val values = ContentValues()
-            values.put(COL_ID, data.id)
+
             values.put(COL_DATE, data.date)
             values.put(COL_TITLE, data.title)
             values.put(COL_CONTENT, data.content)
@@ -51,6 +53,8 @@ class ScheduleTable {
         }
 
         fun doSelectSchedule(context: Context, id: Long): ScheduleData? {
+            Log.d(TAG, "#doSelectSchedule id = $id")
+
             val helper = ScheduleDbHelper(context)
             val db = helper.writableDatabase
 
@@ -59,10 +63,15 @@ class ScheduleTable {
             var data: ScheduleData? = null
             try {
                 cursor = db.rawQuery(sql, arrayOf(id.toString()))
+                Log.d(TAG, "#doSelectSchedule cursor count = " + cursor.count)
                 if (0 < cursor.count) {
                     val date = cursor.getString(cursor.getColumnIndex(COL_DATE))
                     val title = cursor.getString(cursor.getColumnIndex(COL_TITLE))
                     val content = cursor.getString(cursor.getColumnIndex(COL_CONTENT))
+                    Log.d(
+                        TAG,
+                        "#doSelectSchedule date -> $date title -> $title content -> $content"
+                    )
                     data = ScheduleData(id, date, title, content)
                 }
 

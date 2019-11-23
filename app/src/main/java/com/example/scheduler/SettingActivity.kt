@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.scheduler.model.ScheduleTable
+import com.example.scheduler.model.ScheduleData
 import com.example.scheduler.worker.DbWorker
 import java.text.SimpleDateFormat
 
@@ -18,7 +18,6 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var dateEntry: EditText
     lateinit var titleEntry: EditText
     lateinit var contentEntry: EditText
-//    var data: ScheduleData? = null
     var scheduleId: Long = -1
 
     companion object {
@@ -36,15 +35,16 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<Button>(R.id.setting_save_btn).setOnClickListener(this)
         findViewById<Button>(R.id.setting_delete_btn).setOnClickListener(this)
 
-        scheduleId = intent.getLongExtra("schedule_id", -1)
 
-        if (scheduleId != -1L) {
-            val data = ScheduleTable.doSelectSchedule(applicationContext, scheduleId)
-            Log.d(TAG, "#onCreate id = $scheduleId date = " + data?.date)
+        val data = intent.getParcelableExtra<ScheduleData>("schedule_data")
+        scheduleId = data!!.id
 
-            dateEntry.setText(data?.date)
-            titleEntry.setText(data?.title)
-            contentEntry.setText(data?.content)
+            if (scheduleId != -1L) {
+            Log.d(TAG, "#onCreate id = $scheduleId date = " + data.date)
+
+            dateEntry.setText(data.date)
+            titleEntry.setText(data.title)
+            contentEntry.setText(data.content)
         }
     }
 
