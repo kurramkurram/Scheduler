@@ -16,6 +16,7 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var dateEntry: EditText
     lateinit var titleEntry: EditText
     lateinit var contentEntry: EditText
+    lateinit var categoryEntry:EditText
     var scheduleId: Long = -1
 
     companion object {
@@ -29,6 +30,7 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
         dateEntry = findViewById(R.id.setting_date_edit_text)
         titleEntry = findViewById(R.id.setting_title_edit_text)
         contentEntry = findViewById(R.id.setting_content_edit_text)
+        categoryEntry = findViewById(R.id.setting_category_edit_text)
 
         findViewById<Button>(R.id.setting_save_btn).setOnClickListener(this)
         findViewById<Button>(R.id.setting_delete_btn).setOnClickListener(this)
@@ -42,6 +44,7 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
             dateEntry.setText(data.date)
             titleEntry.setText(data.title)
             contentEntry.setText(data.content)
+            categoryEntry.setText(data.category)
         }
     }
 
@@ -58,14 +61,16 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
             DbWorker.startInsertDbWorker(
                 dateEntry.text.toString(),
                 titleEntry.text.toString(),
-                contentEntry.text.toString()
+                contentEntry.text.toString(),
+                categoryEntry.text.toString()
             )
         } else {
             DbWorker.startUpdateDbWorker(
                 scheduleId,
                 dateEntry.text.toString(),
                 titleEntry.text.toString(),
-                contentEntry.text.toString()
+                contentEntry.text.toString(),
+                categoryEntry.text.toString()
             )
         }
 

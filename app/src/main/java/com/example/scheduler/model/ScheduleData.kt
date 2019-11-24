@@ -9,12 +9,14 @@ class ScheduleData : Parcelable {
     var date: String? = null
     var title: String? = null
     var content: String? = null
+    var category: String? = null
 
-    constructor(id: Long, date: String?, title: String?, content: String?) {
+    constructor(id: Long, date: String?, title: String?, content: String?, category: String?) {
         this.id = id
         this.date = date
         this.title = title
         this.content = content
+        this.category = category
     }
 
     constructor(parcel: Parcel) {
@@ -22,6 +24,7 @@ class ScheduleData : Parcelable {
         date = parcel.readString()
         title = parcel.readString()
         content = parcel.readString()
+        category = parcel.readString()
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
@@ -29,6 +32,7 @@ class ScheduleData : Parcelable {
         dest.writeString(date)
         dest.writeString(title)
         dest.writeString(content)
+        dest.writeString(category)
     }
 
     override fun describeContents() = 0

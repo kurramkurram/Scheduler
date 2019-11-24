@@ -15,6 +15,7 @@ class ScheduleTable {
         private const val COL_DATE = "date"
         private const val COL_TITLE = "title"
         private const val COL_CONTENT = "content"
+        private const val COL_CATEGORY = "category"
 
         private const val TAG = "ScheduleTable"
 
@@ -23,7 +24,8 @@ class ScheduleTable {
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_DATE + " TEXT, " +
                 COL_TITLE + " TEXT, " +
-                COL_CONTENT + " TEXT" +
+                COL_CONTENT + " TEXT, " +
+                COL_CATEGORY + " TEXT" +
                 ")"
 
         fun doInsertSchedule(context: Context, data: ScheduleData) {
@@ -40,6 +42,7 @@ class ScheduleTable {
             values.put(COL_DATE, data.date)
             values.put(COL_TITLE, data.title)
             values.put(COL_CONTENT, data.content)
+            values.put(COL_CATEGORY, data.category)
 
             val count = db.insertOrThrow(TABLE_NAME, null, values)
             Log.d("ScheduleTable", "#insert cnt = $count")
@@ -52,16 +55,16 @@ class ScheduleTable {
             db.delete(TABLE_NAME, "_id = ?", arrayOf(id.toString()))
         }
 
-        fun doSelectAll(context: Context): List<ScheduleData> {
+        fun doSelectAll(context: Context, category: String): List<ScheduleData> {
             val helper = ScheduleDbHelper(context)
             val db = helper.writableDatabase
 
-            val sql = "SELECT * FROM $TABLE_NAME"
+            val sql = "SELECT * FROM $TABLE_NAME WHERE $COL_CATEGORY = ?"
             var cursor: Cursor? = null
             val itemList = mutableListOf<ScheduleData>()
 
             try {
-                cursor = db.rawQuery(sql, null, null)
+                cursor = db.rawQuery(sql, arrayOf(category))
                 if (0 < cursor.count) {
                     var data: ScheduleData
                     while (cursor.moveToNext()) {
@@ -69,7 +72,7 @@ class ScheduleTable {
                         val date = cursor.getString(cursor.getColumnIndex(COL_DATE))
                         val title = cursor.getString(cursor.getColumnIndex(COL_TITLE))
                         val content = cursor.getString(cursor.getColumnIndex(COL_CONTENT))
-                        data = ScheduleData(id, date, title, content)
+                        data = ScheduleData(id, date, title, content, category)
                         itemList.add(data)
                     }
                 }
@@ -91,6 +94,7 @@ class ScheduleTable {
             values.put(COL_DATE, data.date)
             values.put(COL_TITLE, data.title)
             values.put(COL_CONTENT, data.content)
+            values.put(COL_CATEGORY, data.category)
 
             val whereClause = "$COL_ID = ?"
             try {
@@ -101,6 +105,34 @@ class ScheduleTable {
             } finally {
                 db.close()
             }
+        }
+
+        fun getCategory(context: Context): List<String> {
+            Log.d(TAG, "#getCategory")
+
+            val helper = ScheduleDbHelper(context)
+            val db = helper.writableDatabase
+
+            val sql = "SELECT DISTINCT $COL_CATEGORY FROM $TABLE_NAME"
+            var cursor: Cursor? = null
+            val categoryList = mutableListOf<String>()
+
+            try {
+                cursor = db.rawQuery(sql, null, null)
+                if (0 < cursor.count) {
+                    while (cursor.moveToNext()) {
+                        categoryList.add(cursor.getString(cursor.getColumnIndex(COL_CATEGORY)))
+                    }
+                }
+
+            } catch (e: Exception) {
+                Log.e(TAG, "#getCategory $e")
+            } finally {
+                cursor?.close()
+                db.close()
+            }
+
+            return categoryList
         }
     }
 }
