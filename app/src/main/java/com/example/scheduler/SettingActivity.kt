@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.scheduler.model.ScheduleData
 import com.example.scheduler.worker.DbWorker
@@ -76,13 +75,13 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
             )
         }
 
-        Toast.makeText(applicationContext, "保存しました", Toast.LENGTH_SHORT).show()
+        applicationContext.show("保存しました")
         finish()
     }
 
     private fun onDeleteButtonTapped() {
         DbWorker.startDeleteDbWorker(scheduleId)
-        Toast.makeText(applicationContext, "削除しました", Toast.LENGTH_SHORT).show()
+        applicationContext.show("削除しました")
         finish()
     }
 }
