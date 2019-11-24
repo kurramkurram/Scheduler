@@ -10,7 +10,6 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.scheduler.model.ScheduleData
 import com.example.scheduler.worker.DbWorker
-import java.text.SimpleDateFormat
 
 class SettingActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -35,9 +34,9 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<Button>(R.id.setting_delete_btn).setOnClickListener(this)
 
         val data = intent.getParcelableExtra<ScheduleData>("schedule_data")
-        scheduleId = data!!.id
+        scheduleId = data?.id ?: -1L
 
-        if (scheduleId != -1L) {
+        if (data != null) {
             Log.d(TAG, "#onCreate id = $scheduleId date = " + data.date)
 
             dateEntry.setText(data.date)
@@ -55,21 +54,16 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("SimpleDateFormat")
     private fun onSaveButtonTapped() {
-        val sdf = SimpleDateFormat("yyyy/MM/dd")
-        val date = sdf.parse(dateEntry.text.toString())
-        val dateString = date?.toString() ?: ""
-
-
         if (scheduleId == -1L) {
             DbWorker.startInsertDbWorker(
-                dateString,
+                dateEntry.text.toString(),
                 titleEntry.text.toString(),
                 contentEntry.text.toString()
             )
         } else {
             DbWorker.startUpdateDbWorker(
                 scheduleId,
-                dateString,
+                dateEntry.text.toString(),
                 titleEntry.text.toString(),
                 contentEntry.text.toString()
             )
