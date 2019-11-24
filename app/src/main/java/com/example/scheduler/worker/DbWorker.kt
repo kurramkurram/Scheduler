@@ -34,7 +34,7 @@ class DbWorker(context: Context, workerParams: WorkerParameters) : Worker(contex
                 data.id = inputData.getLong(WorkerDefine.SCHEDULE_ID, -1)
 
                 if (data.id != -1L) {
-                    ScheduleTable.update(applicationContext, data)
+                    ScheduleTable.doUpdateSchedule(applicationContext, data)
                 }
             }
         }

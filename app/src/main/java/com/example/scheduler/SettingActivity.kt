@@ -9,14 +9,14 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.scheduler.model.ScheduleData
-import com.example.scheduler.worker.DbWorker
+import com.example.scheduler.model.ScheduleTable
 
 class SettingActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var dateEntry: EditText
     lateinit var titleEntry: EditText
     lateinit var contentEntry: EditText
-    lateinit var categoryEntry:EditText
+    lateinit var categoryEntry: EditText
     var scheduleId: Long = -1
 
     companion object {
@@ -57,21 +57,30 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("SimpleDateFormat")
     private fun onSaveButtonTapped() {
+        val data = ScheduleData(
+            scheduleId,
+            dateEntry.text.toString(),
+            titleEntry.text.toString(),
+            contentEntry.text.toString(),
+            categoryEntry.text.toString()
+        )
         if (scheduleId == -1L) {
-            DbWorker.startInsertDbWorker(
-                dateEntry.text.toString(),
-                titleEntry.text.toString(),
-                contentEntry.text.toString(),
-                categoryEntry.text.toString()
-            )
+//            DbWorker.startInsertDbWorker(
+//                dateEntry.text.toString(),
+//                titleEntry.text.toString(),
+//                contentEntry.text.toString(),
+//                categoryEntry.text.toString()
+//            )
+            ScheduleTable.doInsertSchedule(applicationContext, data)
         } else {
-            DbWorker.startUpdateDbWorker(
-                scheduleId,
-                dateEntry.text.toString(),
-                titleEntry.text.toString(),
-                contentEntry.text.toString(),
-                categoryEntry.text.toString()
-            )
+//            DbWorker.startUpdateDbWorker(
+//                scheduleId,
+//                dateEntry.text.toString(),
+//                titleEntry.text.toString(),
+//                contentEntry.text.toString(),
+//                categoryEntry.text.toString()
+//            )
+            ScheduleTable.doUpdateSchedule(applicationContext, data)
         }
 
         applicationContext.show("保存しました")
@@ -79,7 +88,8 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onDeleteButtonTapped() {
-        DbWorker.startDeleteDbWorker(scheduleId)
+//        DbWorker.startDeleteDbWorker(scheduleId)
+        ScheduleTable.doDeleteSchedule(applicationContext, scheduleId)
         applicationContext.show("削除しました")
         finish()
     }

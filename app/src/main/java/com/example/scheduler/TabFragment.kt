@@ -1,5 +1,6 @@
 package com.example.scheduler
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import com.example.scheduler.model.ScheduleData
 import com.example.scheduler.model.ScheduleTable
 
 class TabFragment : Fragment() {
+
+    private var listener: OnListItemClickListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,12 +33,24 @@ class TabFragment : Fragment() {
         return view
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnListItemClickListener) {
+            listener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    internal interface OnListItemClickListener {
+        fun onListItemClicked(data: ScheduleData)
+    }
+
     private fun onListTapped(data: ScheduleData) {
-        // TODO:Activityにcallback
-//        val intent = Intent(this, SettingActivity::class.java)
-//
-//        intent.putExtra("schedule_data", data)
-//        startActivity(intent)
+        listener?.onListItemClicked(data)
     }
 
     companion object {

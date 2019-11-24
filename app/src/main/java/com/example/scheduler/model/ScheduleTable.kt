@@ -86,7 +86,7 @@ class ScheduleTable {
             return itemList
         }
 
-        fun update(context: Context, data: ScheduleData) {
+        fun doUpdateSchedule(context: Context, data: ScheduleData) {
             val helper = ScheduleDbHelper(context)
             val db = helper.writableDatabase
 
